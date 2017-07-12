@@ -43,5 +43,7 @@ section>ul{width:209px!important;}
 	border: 0;display: block;height:85%;position: absolute;width:calc(100% - 230px);
 }
 .layui-tab{height: 86%;}
+.layui-tab>ul{padding:0 3%}
 .layui-tab-content{height:100%}
 .layui-tab-item{height:100%}
+.layui-nav-item>a>img{display: inline;padding-top:15px;padding-right: 5px;}
