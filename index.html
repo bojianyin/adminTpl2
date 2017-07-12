@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Document</title>
+	<title>Admin</title>
 	<link rel="stylesheet" href="layui/css/layui.css" />
+	<link rel="stylesheet" href="css/reset.css" />
 	<link rel="stylesheet" href="css/main.css" />
-	<script src="http://www.jq22.com/jquery/jquery-2.1.1.js"></script>
+	<script src="js/jquery-2.1.4.min.js"></script>
 </head>
 <body class="clearfix">
 	<main class="fr">
@@ -28,30 +29,16 @@
 				  </li>
 				  <li class="layui-nav-item"><a href="">社区</a></li>
 				</ul>
-				
 			</nav>
-			
 		</header>
 
 		<div class="layui-tab" lay-filter="demo" lay-allowclose="true">
 		  <ul class="layui-tab-title">
-		    <li class="layui-this" lay-id="11">网站设置</li>
-		    <li lay-id="22">用户管理</li>
-		    <li lay-id="33">权限分配</li>
-		    <li lay-id="44">商品管理</li>
-		    <li lay-id="55">订单管理</li>
+		  		<li class="layui-this" lay-id="1">控制面板<i class="layui-icon layui-unselect layui-tab-close"></i></li>
 		  </ul>
 		  <div class="layui-tab-content">
-		    <div class="layui-tab-item layui-show">内容1</div>
-		    <div class="layui-tab-item">内容2</div>
-		    <div class="layui-tab-item">内容3</div>
-		    <div class="layui-tab-item">内容4</div>
-		    <div class="layui-tab-item">内容5</div>
+		  		<div class="layui-tab-item layui-show">默认内容</div>
 		  </div>
-		</div>
-		<div class="site-demo-button" style="margin-bottom: 0;">
-		  <button class="layui-btn site-demo-active" data-type="tabDelete">删除：商品管理</button>
-		  <button class="layui-btn site-demo-active" data-type="tabChange">切换到：用户管理</button>
 		</div>
 	</main>
 	<section class="fl">
@@ -60,23 +47,20 @@
 		  <li class="layui-nav-item layui-nav-itemed">
 		    <a href="javascript:;">默认展开</a>
 		    <dl class="layui-nav-child">
-		      <dd><a href="javascript:;" data-type="tabAdd" data-id="">选项1</a></dd>
-		      <dd><a href="javascript:;" data-type="tabAdd" data-id="">选项2</a></dd>
-		      <dd><a href="">跳转</a></dd>
+		      <dd><a href="javascript:;" data-type="tabAdd" data-id="" data-url="Tpl/add.html">选项1</a></dd>
+		      <dd><a href="javascript:;" data-type="tabAdd" data-id="" data-url="Tpl/remove.html">选项2</a></dd>
 		    </dl>
 		  </li>
 		  <li class="layui-nav-item">
 		    <a href="javascript:;">解决方案</a>
 		    <dl class="layui-nav-child">
-		      <dd><a href="">移动模块</a></dd>
-		      <dd><a href="">后台模版</a></dd>
-		      <dd><a href="">电商平台</a></dd>
+		      <dd><a href="javascript:;" data-type="tabAdd" data-id="" data-url="">选项3</a></dd>
+		      <dd><a href="javascript:;" data-type="tabAdd" data-id="" data-url="">选项4</a></dd>
 		    </dl>
 		  </li>
 		  <li class="layui-nav-item"><a href="">产品</a></li>
 		  <li class="layui-nav-item"><a href="">大数据</a></li>
 		</ul>
-		
 	</section>
 	<script src="layui/layui.js"></script>
 	<script>
@@ -88,10 +72,9 @@
 			      //新增一个Tab项
 			      element.tabAdd('demo', {
 			        title: $(this).text() //用于演示
-			        ,content: '内容'+ (Math.random()*1000|0)
 			        ,id: $(this).attr("data-id") //实际使用一般是规定好的id，这里以时间戳模拟下
 			      })
-			   
+			   		binds();
 			    }
 			    ,tabDelete: function(othis){
 			      //删除指定Tab项
@@ -108,31 +91,25 @@
 			    if(othis.attr("data-id")==""){
 			    	othis.attr("data-id",new Date().getTime());
 			    	active[type] ? active[type].call(this, othis) : '';
+			    	
 			    	active.tabChange(othis.attr("data-id"));
+			    	$('<iframe src='+(!othis.attr("data-url")?'Tpl/404NoFind.html':othis.attr("data-url"))+' width="" height="" data-id='+othis.attr("data-id")+'></iframe>').appendTo($(".layui-show"));
 			    }else{
 			    	othis.attr("data-type","tabChange");
 			    	active.tabChange(othis.attr("data-id"));
 			    }
 			  });
-			  // $(".layui-tab-close").click(function(){
-			  // 	alert();
-			  // 	var ids=$(this).parent().attr("lay-id");
-			  // 	console.log(ids);
-			  // 	for(var i=0;i<$("section>ul dd").length;i++){
-			  // 		if($("section>ul dd").eq(i).children().attr("data-id")==ids){
-			  // 			alert();
-			  // 			$("section>ul dd").eq(i).children().attr("data-id","")
-			  // 		}
-			  // 	}
-			  // })
-			  
-			  //Hash地址的定位
-			  var layid = location.hash.replace(/^#test=/, '');
-			  element.tabChange('test', layid);
-			  
-			  element.on('tab(test)', function(elem){
-			    location.hash = 'test='+ $(this).attr('lay-id');
-			  });
+			    function binds(){
+				   $(".layui-tab-close").click(function(){
+				   	var ids=$(this).parent().attr("lay-id");
+				   	for(var i=0;i<$("section>ul dd").length;i++){
+				   		if($("section>ul dd").eq(i).children().attr("data-id")==ids){
+				   			$("section>ul dd").eq(i).children().attr("data-id","")
+				   		}
+				   	}
+				   })
+			    }
+			  binds();
 		})
 		
 	</script>
